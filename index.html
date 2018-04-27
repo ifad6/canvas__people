@@ -1,71 +1,31 @@
 <!doctype html>
 <html>
 <head>
-<style>
-	html, body { width: 100%; height: 100%; overflow: hidden; }
-	body { padding: 0; margin: 0; min-height: 100%; height: 100%; position: relative; }
-	body * { padding: 0; margin: 0; font-family: 'Open Sans', sans-serif; font-size: 15px; box-sizing: content-box; }
-</style>
 <meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="index.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="points.js"></script>
+<script type="text/javascript" src="animation.js"></script>
 </head>
 <body>
 
-<script type="text/javascript" src="//lib.olbe.ru/js/jquery.js"></script>
-
 <canvas id="example"></canvas>
 
-<script type="text/javascript">
-
-	var canvas = document.getElementById('example');
-	var ctx = canvas.getContext('2d');
-	ctx.lineCap = 'round';
-	var l = 0;
-	var frameRate = 30;
-	
-	function scale() {
-
-		canvas.width = document.body.clientWidth;
-		canvas.height = document.body.clientHeight;
-
-		l = Math.round(canvas.height / 12);
-		ctx.lineWidth = Math.round(l / 3);
-		ctx.lineCap = 'round';
-
-	}
-	scale();
-
-	$(document).keydown(function(e){
-
-		//e.preventDefault();
-
-		switch(e.keyCode) {
-			case 37: elx = elx - l*2 * Math.round(Math.cos(15)); hlx = elx - Math.round(l*2/3);
-			break;
-			case 39: elx = elx + l*2 * Math.round(Math.cos(30)); hlx = elx + Math.round(l/6);
-			break;
-		}
-
-	});
-
-</script>
-
-<script type="text/javascript" src="/canvas/people/points.js"></script>
-<script type="text/javascript" src="/canvas/people/animation.js"></script>
-
 <div style="position: fixed; top: 0; left: 0; z-index: 100;">
-<table>
-<tr><td>Голова</td><td id="x"></td><td id="y"></td></tr>
-<tr><td>Плечи</td><td id="sx"></td><td id="sy"></td></tr>
-<tr><td>Левый локоть</td><td id="elx"></td><td id="ely"></td></tr>
-<tr><td>Левая рука</td><td id="hlx"></td><td id="hly"></td></tr>
-<tr><td>Правый локоть</td><td id="erx"></td><td id="ery"></td></tr>
-<tr><td>Правая рука</td><td id="hrx"></td><td id="hry"></td></tr>
-<tr><td>Таз</td><td id="px"></td><td id="py"></td></tr>
-<tr><td>Левое колено</td><td id="klx"></td><td id="kly"></td></tr>
-<tr><td>Левая ступня</td><td id="flx"></td><td id="fly"></td></tr>
-<tr><td>Правое колено</td><td id="krx"></td><td id="kry"></td></tr>
-<tr><td>Правая ступня</td><td id="frx"></td><td id="fry"></td></tr>
-</table>
+	<table>
+		<tr><td>Голова</td><td id="x"></td><td id="y"></td></tr>
+		<tr><td>Плечи</td><td id="sx"></td><td id="sy"></td></tr>
+		<tr><td>Левый локоть</td><td id="elx"></td><td id="ely"></td></tr>
+		<tr><td>Левая рука</td><td id="hlx"></td><td id="hly"></td></tr>
+		<tr><td>Правый локоть</td><td id="erx"></td><td id="ery"></td></tr>
+		<tr><td>Правая рука</td><td id="hrx"></td><td id="hry"></td></tr>
+		<tr><td>Таз</td><td id="px"></td><td id="py"></td></tr>
+		<tr><td>Левое колено</td><td id="klx"></td><td id="kly"></td></tr>
+		<tr><td>Левая ступня</td><td id="flx"></td><td id="fly"></td></tr>
+		<tr><td>Правое колено</td><td id="krx"></td><td id="kry"></td></tr>
+		<tr><td>Правая ступня</td><td id="frx"></td><td id="fry"></td></tr>
+	</table>
 </div>
 
 </body>
