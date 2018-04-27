@@ -1,4 +1,4 @@
-var canvas = document.getElementById('example');
+var canvas = document.getElementById('people');
 var ctx = canvas.getContext('2d');
 ctx.lineCap = 'round';
 var l = 0;
