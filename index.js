@@ -1,4 +1,4 @@
-var Map;
+var Canvas;
 
 var canvas = document.getElementById('people');
 var ctx = canvas.getContext('2d');
