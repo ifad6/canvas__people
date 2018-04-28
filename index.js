@@ -15,7 +15,9 @@ setInterval(function(){
 	C.clearRect(0, 0, Canvas.width, Canvas.height);
 	People.recalc();
 	People.draw();
-}, 1000 / Canvas.frameRate);
+}, Canvas.frameTime);
+
+People.LeftHand.moveTo(110, 1).moveTo(10, 1);
 
 $(document).keydown(function(e) {
 

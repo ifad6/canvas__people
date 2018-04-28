@@ -62,7 +62,7 @@ var People = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = this.angle || (angle ||  30)/* + People.LeftPreHand.angle*/;
+			this.angle = angle || this.angle || 30/* + People.LeftPreHand.angle*/;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.LeftPreHand.x2;
 			this.y1 = People.LeftPreHand.y2;
@@ -70,7 +70,18 @@ var People = {
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(angle, time, func) {
+			var delta = angle - this.angle;
+			var step = delta / time / Canvas.frameRate;
+			var needStep = Math.round(delta / step);
+			var animation = setInterval(function(){
+				People.LeftHand.angle += step;
+				needStep--;
+				if (needStep <= 0) clearInterval(animation);
+				}, Canvas.frameTime);
+			return this;
+		}
 	},
 
 	RightPreHand: {

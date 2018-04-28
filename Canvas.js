@@ -11,5 +11,6 @@ var Canvas = {
 	},
 	setFrameRate: function (rate) {
 		this.frameRate = rate;
+		this.frameTime = Math.round(1000 / this.frameRate);
 	}
 }
