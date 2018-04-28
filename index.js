@@ -1,22 +1,26 @@
-var Canvas;
 
-var canvas = document.getElementById('people');
-var ctx = canvas.getContext('2d');
-var l = 0;
-var frameRate = 30;
+Canvas.set( document.getElementById('people') );
+Canvas.setFrameRate(30);
 
-function scale()
-{
-	canvas.width = document.body.clientWidth;
-	canvas.height = document.body.clientHeight;
 
-	l = Math.round(canvas.height / 12);
-	ctx.lineWidth = Math.round(l / 3);
-	ctx.lineCap = 'round';
-}
-scale();
+var C = Canvas.getContext();
 
-$(document).keydown(function(e){
+
+
+$(window).resize(function() {
+	Canvas.setSize();
+	People.recalc();
+});
+$(window).resize();
+
+setInterval(function(){
+	C.clearRect(0, 0, Canvas.getSize().width, Canvas.getSize().height);
+	People.recalc();
+	People.LeftHand.angle += 3;
+	People.RightHand.angle += 5;
+}, 1000 / Canvas.frameRate);
+
+/*$(document).keydown(function(e) {
 
 	//e.preventDefault();
 
@@ -28,4 +32,4 @@ $(document).keydown(function(e){
 		break;
 	}
 
-});
+});*/
