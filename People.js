@@ -52,6 +52,7 @@ var People = {
 			this.y1 = People.Head.y + Math.round(People.Head.radius * 1.5);
 			this.x2 = this.x1 - Math.round(this.length * Math.sin(this.radian));
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			People.LeftHand.calc();
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
@@ -61,7 +62,7 @@ var People = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || this.angle || 30)/* + People.LeftPreHand.angle*/;
+			this.angle = this.angle || (angle ||  30)/* + People.LeftPreHand.angle*/;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.LeftPreHand.x2;
 			this.y1 = People.LeftPreHand.y2;
@@ -82,6 +83,7 @@ var People = {
 			this.y1 = People.Head.y + Math.round(People.Head.radius * 1.5);
 			this.x2 = this.x1 + Math.round(this.length * Math.sin(this.radian));
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			People.RightHand.calc();
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
@@ -106,12 +108,13 @@ var People = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || 30);
+			this.angle = (angle || this.angle || 30);
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.Body.x2;
 			this.y1 = People.Body.y2;
 			this.x2 = this.x1 - Math.round(this.length * Math.sin(this.radian));
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			People.LeftLeg.calc();
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
@@ -121,7 +124,7 @@ var People = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || 30) - People.LeftPreLeg.angle;
+			this.angle = (angle || this.angle || 30)/* - People.LeftPreLeg.angle*/;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.LeftPreLeg.x2;
 			this.y1 = People.LeftPreLeg.y2;
@@ -136,12 +139,13 @@ var People = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || 50);
+			this.angle = (angle || this.angle || 50);
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.Body.x2;
 			this.y1 = People.Body.y2;
 			this.x2 = this.x1 + Math.round(this.length * Math.sin(this.radian));
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			People.RightLeg.calc();
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
@@ -151,7 +155,7 @@ var People = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || 50) - People.RightPreLeg.angle;
+			this.angle = (angle || this.angle || 50)/* - People.RightPreLeg.angle*/;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.RightPreLeg.x2;
 			this.y1 = People.RightPreLeg.y2;
@@ -164,19 +168,12 @@ var People = {
 
 
 	recalc: function() {
-		this.Head.setPosition().draw();
-		C.beginPath();
-		this.Body.calc().draw();
-		this.LeftPreHand.calc().draw();
-		this.LeftHand.calc().draw();
-		this.RightPreHand.calc().draw();
-		this.RightHand.calc().draw();
-		this.LeftPreLeg.calc().draw();
-		this.LeftLeg.calc().draw();
-		this.RightPreLeg.calc().draw();
-		this.RightLeg.calc().draw();
-		C.closePath();
-		C.stroke();
+		this.Head.setPosition();
+		this.Body.calc();
+		this.LeftPreHand.calc();
+		this.RightPreHand.calc();
+		this.LeftPreLeg.calc();
+		this.RightPreLeg.calc();
 	},
 	resize: function() {
 		this.setPartSize();
@@ -190,6 +187,19 @@ var People = {
 		C.lineTo(x2, y2);
 	},
 	draw: function() {
-		
+		this.Head.draw();
+		C.beginPath();
+		this.Body.draw();
+		this.LeftPreHand.draw();
+		this.LeftHand.draw();
+		this.RightPreHand.draw();
+		this.RightHand.draw();
+		this.LeftPreLeg.draw();
+		this.LeftLeg.draw();
+		this.RightPreLeg.draw();
+		this.RightLeg.draw();
+		C.moveTo(this.Head.x, this.Head.y);
+		C.closePath();
+		C.stroke();
 	}
 }

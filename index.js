@@ -14,20 +14,23 @@ $(window).resize(function() {
 setInterval(function(){
 	C.clearRect(0, 0, Canvas.width, Canvas.height);
 	People.recalc();
-	People.LeftHand.angle += 3;
-	People.RightHand.angle += 5;
+	People.draw();
 }, 1000 / Canvas.frameRate);
 
-/*$(document).keydown(function(e) {
+$(document).keydown(function(e) {
 
-	//e.preventDefault();
+	e.preventDefault();
 
 	switch(e.keyCode)
 	{
-		case 37: elx = elx - l*2 * Math.round(Math.cos(15)); hlx = elx - Math.round(l*2/3);
+		case 37: People.LeftHand.angle += 3;
 		break;
-		case 39: elx = elx + l*2 * Math.round(Math.cos(30)); hlx = elx + Math.round(l/6);
+		case 38: People.LeftLeg.angle += 3;
+		break;
+		case 39: People.RightHand.angle += 5;
+		break;
+		case 40: People.RightLeg.angle += 3;
 		break;
 	}
 
-});*/
+});
