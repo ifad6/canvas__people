@@ -1,20 +1,18 @@
 
-Canvas.set( document.getElementById('people') );
+Canvas.set('people');
 Canvas.setFrameRate(30);
 
-
 var C = Canvas.getContext();
-
 
 
 $(window).resize(function() {
 	Canvas.setSize();
 	People.resize();
-});
-$(window).resize();
+}).resize();
+
 
 setInterval(function(){
-	C.clearRect(0, 0, Canvas.getSize().width, Canvas.getSize().height);
+	C.clearRect(0, 0, Canvas.width, Canvas.height);
 	People.recalc();
 	People.LeftHand.angle += 3;
 	People.RightHand.angle += 5;

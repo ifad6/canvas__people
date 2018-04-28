@@ -2,26 +2,22 @@ var People = {
 
 	partSize: 0,
 	setPartSize: function(size) {
-		if (size === undefined) size = Math.round(Canvas.getSize().height / 10);
-		this.partSize = size;
-		$('#partSize').html(this.partSize);
+		this.partSize = size || Math.round(Canvas.height / 10);
 	},
 
 	lineWidth: 0,
 	setLineWidth: function(width) {
-		if (width === undefined) width = Math.round(this.partSize / 3);
-		this.lineWidth = width;
+		this.lineWidth = width || Math.round(this.partSize / 3);
 		C.lineWidth = this.lineWidth;
 		C.lineCap = 'round';
-		$('#lineWidth').html(this.lineWidth);
 	},
 
 
 	Head: {
 		x: 0, y: 0, radius: 0,
 		setPosition: function(x, y, radius) {
-			this.x = x || Math.round(Canvas.getSize().width / 2);
-			this.y = y || Canvas.getSize().height - People.partSize * 8;
+			this.x = x || Math.round(Canvas.width / 2);
+			this.y = y || Canvas.height - People.partSize * 8;
 			this.radius = radius || People.partSize;
 			return this;
 		},
