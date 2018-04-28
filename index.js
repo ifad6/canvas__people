@@ -9,7 +9,7 @@ var C = Canvas.getContext();
 
 $(window).resize(function() {
 	Canvas.setSize();
-	People.recalc();
+	People.resize();
 });
 $(window).resize();
 
