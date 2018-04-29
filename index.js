@@ -17,7 +17,15 @@ setInterval(function(){
 	People.draw();
 }, Canvas.frameTime);
 
-People.LeftHand.moveTo(110, 1).moveTo(10, 1);
+People.Body.moveTo([ [-10, 0.5], [10, 0.5] ], true);
+People.LeftHand.moveTo([ [150, 0.5] ]);
+People.LeftPreHand.moveTo([ [110, 0.5], [70, 0.5] ], true);
+People.RightHand.moveTo([ [140, 0.5] ]);
+People.RightPreHand.moveTo([ [70, 0.5], [100, 0.5] ], true);
+People.LeftPreLeg.moveTo([ [90, 0.5], [60, 0.5] ], true);
+People.RightPreLeg.moveTo([ [80, 0.5], [60, 0.5] ], true);
+People.LeftLeg.moveTo([ [10, 0.5], [100, 0.5], true ]);
+People.RightLeg.moveTo([ [40, 0.5], [30, 0.5] ], true);
 
 $(document).keydown(function(e) {
 

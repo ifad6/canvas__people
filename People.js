@@ -31,7 +31,7 @@ var People = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 3);
-			this.angle = (angle || 5);
+			this.angle = angle || this.angle || 5;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.Head.x;
 			this.y1 = People.Head.y + People.Head.radius;
@@ -39,14 +39,15 @@ var People = {
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	LeftPreHand: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 1.5);
-			this.angle = (angle || 30);
+			this.angle = angle || this.angle || 30;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.Head.x - Math.round(People.lineWidth / 2);
 			this.y1 = People.Head.y + Math.round(People.Head.radius * 1.5);
@@ -55,7 +56,8 @@ var People = {
 			People.LeftHand.calc();
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	LeftHand: {
@@ -71,24 +73,14 @@ var People = {
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(angle, time, func) {
-			var delta = angle - this.angle;
-			var step = delta / time / Canvas.frameRate;
-			var needStep = Math.round(delta / step);
-			var animation = setInterval(function(){
-				People.LeftHand.angle += step;
-				needStep--;
-				if (needStep <= 0) clearInterval(animation);
-				}, Canvas.frameTime);
-			return this;
-		}
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	RightPreHand: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 1.5);
-			this.angle = (angle || 50);
+			this.angle = angle || this.angle || 50;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.Head.x + Math.round(People.lineWidth / 2);
 			this.y1 = People.Head.y + Math.round(People.Head.radius * 1.5);
@@ -97,14 +89,15 @@ var People = {
 			People.RightHand.calc();
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	RightHand: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || this.angle || 50)/* + People.LeftPreHand.angle*/;
+			this.angle = angle || this.angle || 50/* + People.LeftPreHand.angle*/;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.RightPreHand.x2;
 			this.y1 = People.RightPreHand.y2;
@@ -112,14 +105,15 @@ var People = {
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	LeftPreLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || this.angle || 30);
+			this.angle = angle || this.angle || 30;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.Body.x2;
 			this.y1 = People.Body.y2;
@@ -128,14 +122,15 @@ var People = {
 			People.LeftLeg.calc();
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	LeftLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || this.angle || 30)/* - People.LeftPreLeg.angle*/;
+			this.angle = angle || this.angle || 30/* - People.LeftPreLeg.angle*/;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.LeftPreLeg.x2;
 			this.y1 = People.LeftPreLeg.y2;
@@ -143,14 +138,15 @@ var People = {
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	RightPreLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || this.angle || 50);
+			this.angle = angle || this.angle || 50;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.Body.x2;
 			this.y1 = People.Body.y2;
@@ -159,14 +155,15 @@ var People = {
 			People.RightLeg.calc();
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 	RightLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
 			this.length = Math.round(People.partSize * 2);
-			this.angle = (angle || this.angle || 50)/* - People.RightPreLeg.angle*/;
+			this.angle = angle || this.angle || 50/* - People.RightPreLeg.angle*/;
 			this.radian = this.angle * Math.PI / 180;
 			this.x1 = People.RightPreLeg.x2;
 			this.y1 = People.RightPreLeg.y2;
@@ -174,7 +171,8 @@ var People = {
 			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) }
+		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
 
 
@@ -212,5 +210,24 @@ var People = {
 		C.moveTo(this.Head.x, this.Head.y);
 		C.closePath();
 		C.stroke();
+	},
+	moveTo: function(object, array, cycle) {
+		if (!array.length) return false;
+		var arr = array.shift();
+		if (cycle) array.push(arr);
+		var angle = arr[0],
+			time = arr[1],
+			delta = angle - object.angle,
+			step = delta / time / Canvas.frameRate,
+			needStep = Math.round(delta / step),
+			animation = setInterval(function(){
+				object.angle += step;
+				needStep--;
+				if (needStep <= 0)
+				{
+					clearInterval(animation);
+					People.moveTo(object, array, cycle);
+				}
+			}, Canvas.frameTime);
 	}
 }
