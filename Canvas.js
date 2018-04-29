@@ -1,16 +1,18 @@
-var Canvas = {
-	set: function (id) {
-		this.element = document.getElementById(id);
+function Canvas() {
+	var self = this;
+
+	this.set = function (id) {
+		self.element = document.getElementById(id);
+	}
+	this.setSize = function (x, y) {
+		self.element.width = this.width = x || document.body.clientWidth;
+		self.element.height = this.height = y || document.body.clientHeight;
 	},
-	setSize: function (x, y) {
-		this.element.width = this.width = x || document.body.clientWidth;
-		this.element.height = this.height = y || document.body.clientHeight;
+	this.getContext = function () {
+		return self.element.getContext('2d');
 	},
-	getContext: function () {
-		return this.element.getContext('2d');
-	},
-	setFrameRate: function (rate) {
-		this.frameRate = rate;
-		this.frameTime = Math.round(1000 / this.frameRate);
+	this.setFrameRate = function (rate) {
+		self.frameRate = rate;
+		self.frameTime = Math.round(1000 / this.frameRate);
 	}
 }

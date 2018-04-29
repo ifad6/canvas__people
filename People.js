@@ -17,7 +17,7 @@ var People = {
 
 	partSize: 0,
 	setPartSize: function(size) {
-		this.partSize = size || Math.round(Canvas.height / 10);
+		this.partSize = size || Math.round(Canvas.height / 12);
 	},
 
 	lineWidth: 0,
@@ -32,7 +32,7 @@ var People = {
 		x: 0, y: 0, radius: 0,
 		setPosition: function(x, y, radius) {
 			this.x = x || Math.round(Canvas.width / 2);
-			this.y = y || Canvas.height - People.partSize * 8;
+			this.y = y || Canvas.height - People.partSize * 10;
 			this.radius = radius || People.partSize;
 			return this;
 		},
@@ -43,7 +43,7 @@ var People = {
 	},
 
 	Body: {
-		x1: 0, y1: 0, x2: 0, y2: 0, angle: 10,
+		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0,
 		calc: function(angle) {
 			this.length = People.partSize * 3;
 			this.angle = angle || this.angle;
@@ -51,7 +51,7 @@ var People = {
 			this.y1 = People.Head.y + People.Head.radius;
 			this.x2 = this.x1 - getDeviationX(this.length, this.angle);
 			this.y2 = this.y1 + getDeviationY(this.length, this.angle);;
-			this.neckLength = People.partSize * 0.5;
+			this.neckLength = People.partSize * 0.3;
 			this.shoulderX = this.x1 - getDeviationX(this.neckLength, this.angle);
 			this.shoulderY = this.y1 + getDeviationY(this.neckLength, this.angle);
 			return this;
@@ -190,7 +190,6 @@ var People = {
 
 
 	recalc: function() {
-		this.Head.setPosition();
 		this.Body.calc();
 		this.LeftPreHand.calc();
 		this.RightPreHand.calc();
@@ -200,6 +199,7 @@ var People = {
 	resize: function() {
 		this.setPartSize();
 		this.setLineWidth();
+		this.Head.setPosition();
 	},
 
 
