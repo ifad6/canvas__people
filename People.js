@@ -1,3 +1,18 @@
+function gradusToRadian(gradus)
+{
+	return gradus * Math.PI / 180;
+}
+
+function getDeviationX(hypotenuseLength, angle)
+{
+	return Math.round(hypotenuseLength * Math.sin( gradusToRadian(angle) ));
+}
+
+function getDeviationY(hypotenuseLength, angle)
+{
+	return Math.round(hypotenuseLength * Math.cos( gradusToRadian(angle) ));
+}
+
 var People = {
 
 	partSize: 0,
@@ -28,15 +43,17 @@ var People = {
 	},
 
 	Body: {
-		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0,
+		x1: 0, y1: 0, x2: 0, y2: 0, angle: 10,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 3);
-			this.angle = angle || this.angle || 5;
-			this.radian = this.angle * Math.PI / 180;
+			this.length = People.partSize * 3;
+			this.angle = angle || this.angle;
 			this.x1 = People.Head.x;
 			this.y1 = People.Head.y + People.Head.radius;
-			this.x2 = this.x1 + Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.x2 = this.x1 - getDeviationX(this.length, this.angle);
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle);;
+			this.neckLength = People.partSize * 0.5;
+			this.shoulderX = this.x1 - getDeviationX(this.neckLength, this.angle);
+			this.shoulderY = this.y1 + getDeviationY(this.neckLength, this.angle);
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
@@ -46,16 +63,16 @@ var People = {
 	LeftPreHand: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 1.5);
-			this.angle = angle || this.angle || 30;
-			this.radian = this.angle * Math.PI / 180;
-			this.x1 = People.Head.x - Math.round(People.lineWidth / 2);
-			this.y1 = People.Head.y + Math.round(People.Head.radius * 1.5);
-			this.x2 = this.x1 - Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.length = People.partSize * 1.5;
+			this.angle = angle || this.angle;
+			this.x1 = People.Body.shoulderX;
+			this.y1 = People.Body.shoulderY;
+			this.x2 = this.x1 - getDeviationX(this.length, this.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
 			People.LeftHand.calc();
 			return this;
 		},
+		getAngle: function() { return this.angle + People.Body.angle; },
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
 		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
@@ -63,13 +80,12 @@ var People = {
 	LeftHand: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 2);
-			this.angle = angle || this.angle || 30/* + People.LeftPreHand.angle*/;
-			this.radian = this.angle * Math.PI / 180;
+			this.length = People.partSize * 2;
+			this.angle = angle || this.angle;
 			this.x1 = People.LeftPreHand.x2;
 			this.y1 = People.LeftPreHand.y2;
-			this.x2 = this.x1 - Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.x2 = this.x1 - getDeviationX(this.length, this.angle + People.LeftPreHand.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.LeftPreHand.getAngle());
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
@@ -79,16 +95,16 @@ var People = {
 	RightPreHand: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 1.5);
-			this.angle = angle || this.angle || 50;
-			this.radian = this.angle * Math.PI / 180;
-			this.x1 = People.Head.x + Math.round(People.lineWidth / 2);
-			this.y1 = People.Head.y + Math.round(People.Head.radius * 1.5);
-			this.x2 = this.x1 + Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.length = People.partSize * 1.5;
+			this.angle = angle || this.angle;
+			this.x1 = People.Body.shoulderX;
+			this.y1 = People.Body.shoulderY;
+			this.x2 = this.x1 + getDeviationX(this.length, this.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
 			People.RightHand.calc();
 			return this;
 		},
+		getAngle: function() { return this.angle - People.Body.angle; },
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
 		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
@@ -96,13 +112,12 @@ var People = {
 	RightHand: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 2);
-			this.angle = angle || this.angle || 50/* + People.LeftPreHand.angle*/;
-			this.radian = this.angle * Math.PI / 180;
+			this.length = People.partSize * 2;
+			this.angle = angle || this.angle;
 			this.x1 = People.RightPreHand.x2;
 			this.y1 = People.RightPreHand.y2;
-			this.x2 = this.x1 + Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.x2 = this.x1 + getDeviationX(this.length, this.angle + People.RightPreHand.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.RightPreHand.getAngle());
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
@@ -112,16 +127,16 @@ var People = {
 	LeftPreLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 2);
-			this.angle = angle || this.angle || 30;
-			this.radian = this.angle * Math.PI / 180;
+			this.length = People.partSize * 2;
+			this.angle = angle || this.angle;
 			this.x1 = People.Body.x2;
 			this.y1 = People.Body.y2;
-			this.x2 = this.x1 - Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.x2 = this.x1 - getDeviationX(this.length, this.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
 			People.LeftLeg.calc();
 			return this;
 		},
+		getAngle: function() { return this.angle + People.Body.angle; },
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
 		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
@@ -129,13 +144,12 @@ var People = {
 	LeftLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 2);
-			this.angle = angle || this.angle || 30/* - People.LeftPreLeg.angle*/;
-			this.radian = this.angle * Math.PI / 180;
+			this.length = People.partSize * 2;
+			this.angle = angle || this.angle;
 			this.x1 = People.LeftPreLeg.x2;
 			this.y1 = People.LeftPreLeg.y2;
-			this.x2 = this.x1 - Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.x2 = this.x1 - getDeviationX(this.length, this.angle + People.LeftPreLeg.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.LeftPreLeg.getAngle());
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
@@ -145,16 +159,16 @@ var People = {
 	RightPreLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 2);
-			this.angle = angle || this.angle || 50;
-			this.radian = this.angle * Math.PI / 180;
+			this.length = People.partSize * 2;
+			this.angle = angle || this.angle;
 			this.x1 = People.Body.x2;
 			this.y1 = People.Body.y2;
-			this.x2 = this.x1 + Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.x2 = this.x1 + getDeviationX(this.length, this.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
 			People.RightLeg.calc();
 			return this;
 		},
+		getAngle: function() { return this.angle - People.Body.angle; },
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
 		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
 	},
@@ -162,13 +176,12 @@ var People = {
 	RightLeg: {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = Math.round(People.partSize * 2);
-			this.angle = angle || this.angle || 50/* - People.RightPreLeg.angle*/;
-			this.radian = this.angle * Math.PI / 180;
+			this.length = People.partSize * 2;
+			this.angle = angle || this.angle;
 			this.x1 = People.RightPreLeg.x2;
 			this.y1 = People.RightPreLeg.y2;
-			this.x2 = this.x1 - Math.round(this.length * Math.sin(this.radian));
-			this.y2 = this.y1 + Math.round(this.length * Math.cos(this.radian));
+			this.x2 = this.x1 - getDeviationX(this.length, this.angle + People.RightPreLeg.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.RightPreLeg.getAngle());
 			return this;
 		},
 		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
