@@ -1,24 +1,3 @@
-/*function Class() {
-	var self = this;
-	this.a = 5;
-	this.func = function(){
-		self.a++;
-		console.log(self.a);
-	}
-	this.Ob = function() {
-		this.func = function() {
-			console.log(self.a);
-		}
-		return this;
-	}
-}
-
-var Ob = new Class();
-console.log(Ob);
-Ob.Ob.func();
-Ob.Ob.func();
-Ob.Ob.func();*/
-
 
 Canvas = new Canvas();
 Canvas.set('people');
@@ -27,10 +6,13 @@ Canvas.setFrameRate(30);
 var C = Canvas.getContext();
 
 
-$(window).resize(function() {
+window.addEventListener('resize', function() {
 	Canvas.setSize();
 	People.resize();
-}).resize();
+});
+var event = new Event('resize');
+window.dispatchEvent(event);
+
 
 var Player = jQuery.extend(true, {}, People);
 Player.Head.setPosition(100, 100);
@@ -57,7 +39,7 @@ People.RightLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
 
 console.log(Player);
 
-$(document).keydown(function(e) {
+document.addEventListener('keydown', function(e) {
 
 	//e.preventDefault();
 
