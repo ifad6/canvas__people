@@ -1,4 +1,4 @@
-function Class() {
+/*function Class() {
 	var self = this;
 	this.a = 5;
 	this.func = function(){
@@ -17,11 +17,10 @@ var Ob = new Class();
 console.log(Ob);
 Ob.Ob.func();
 Ob.Ob.func();
-Ob.Ob.func();
+Ob.Ob.func();*/
 
 
-
-
+Canvas = new Canvas();
 Canvas.set('people');
 Canvas.setFrameRate(30);
 
