@@ -13,202 +13,210 @@ function getDeviationY(hypotenuseLength, angle)
 	return Math.round(hypotenuseLength * Math.cos( gradusToRadian(angle) ));
 }
 
-var People = {
+function People(id)
+{
+	var self = this;
+	var Canvas = new window.Canvas();
+	Canvas.create('body', id).setSize(500, 500);
+	
+	Canvas.setFrameRate(30);
+	C = Canvas.getContext();
 
-	partSize: 0,
-	setPartSize: function(size) {
-		this.partSize = size || Math.round(Canvas.height / 12);
-	},
+	this.partSize = 0;
+	this.setPartSize = function(size) {
+		self.partSize = size || Math.round(Canvas.height / 12);
+	}
 
-	lineWidth: 0,
-	setLineWidth: function(width) {
-		this.lineWidth = width || Math.round(this.partSize / 3);
-		C.lineWidth = this.lineWidth;
+	this.lineWidth = 0;
+	this.setLineWidth = function(width) {
+		C.lineWidth = self.lineWidth = width || Math.round(self.partSize / 3);
 		C.lineCap = 'round';
 	},
 
 
-	Head: {
+	this.Head = {
 		x: 0, y: 0, radius: 0,
 		setPosition: function(x, y, radius) {
-			this.x = x || Math.round(Canvas.width / 2);
-			this.y = y || Canvas.height - People.partSize * 10;
-			this.radius = radius || People.partSize;
+			this.x = x || this.x || Math.round(Canvas.width / 2);
+			this.y = y || this.y || Canvas.height - self.partSize * 10;
+			this.radius = radius || this.radius || self.partSize;
 			return this;
 		},
 		draw: function() {
 			C.arc(this.x, this.y, this.radius, 0, 2*Math.PI, true);
 			C.fill();
 		}
-	},
+	}
 
-	Body: {
+	this.Body = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 3;
+			this.length = self.partSize * 3;
 			this.angle = angle || this.angle;
-			this.x1 = People.Head.x;
-			this.y1 = People.Head.y + People.Head.radius;
+			this.x1 = self.Head.x;
+			this.y1 = self.Head.y + self.Head.radius;
 			this.x2 = this.x1 - getDeviationX(this.length, this.angle);
-			this.y2 = this.y1 + getDeviationY(this.length, this.angle);;
-			this.neckLength = People.partSize * 0.3;
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle);
+			this.neckLength = self.partSize * 0.3;
 			this.shoulderX = this.x1 - getDeviationX(this.neckLength, this.angle);
 			this.shoulderY = this.y1 + getDeviationY(this.neckLength, this.angle);
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	LeftPreHand: {
+	this.LeftPreHand = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 1.5;
+			this.length = self.partSize * 1.5;
 			this.angle = angle || this.angle;
-			this.x1 = People.Body.shoulderX;
-			this.y1 = People.Body.shoulderY;
+			this.x1 = self.Body.shoulderX;
+			this.y1 = self.Body.shoulderY;
 			this.x2 = this.x1 - getDeviationX(this.length, this.getAngle());
 			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
-			People.LeftHand.calc();
+			self.LeftHand.calc();
 			return this;
 		},
-		getAngle: function() { return this.angle + People.Body.angle; },
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		getAngle: function() { return this.angle + self.Body.angle; },
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	LeftHand: {
+	this.LeftHand = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 2;
+			this.length = self.partSize * 2;
 			this.angle = angle || this.angle;
-			this.x1 = People.LeftPreHand.x2;
-			this.y1 = People.LeftPreHand.y2;
-			this.x2 = this.x1 - getDeviationX(this.length, this.angle + People.LeftPreHand.getAngle());
-			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.LeftPreHand.getAngle());
+			this.x1 = self.LeftPreHand.x2;
+			this.y1 = self.LeftPreHand.y2;
+			this.x2 = this.x1 - getDeviationX(this.length, this.angle + self.LeftPreHand.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + self.LeftPreHand.getAngle());
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	RightPreHand: {
+	this.RightPreHand = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 1.5;
+			this.length = self.partSize * 1.5;
 			this.angle = angle || this.angle;
-			this.x1 = People.Body.shoulderX;
-			this.y1 = People.Body.shoulderY;
+			this.x1 = self.Body.shoulderX;
+			this.y1 = self.Body.shoulderY;
 			this.x2 = this.x1 + getDeviationX(this.length, this.getAngle());
 			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
-			People.RightHand.calc();
+			self.RightHand.calc();
 			return this;
 		},
-		getAngle: function() { return this.angle - People.Body.angle; },
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		getAngle: function() { return this.angle - self.Body.angle; },
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	RightHand: {
+	this.RightHand = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 2;
+			this.length = self.partSize * 2;
 			this.angle = angle || this.angle;
-			this.x1 = People.RightPreHand.x2;
-			this.y1 = People.RightPreHand.y2;
-			this.x2 = this.x1 + getDeviationX(this.length, this.angle + People.RightPreHand.getAngle());
-			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.RightPreHand.getAngle());
+			this.x1 = self.RightPreHand.x2;
+			this.y1 = self.RightPreHand.y2;
+			this.x2 = this.x1 + getDeviationX(this.length, this.angle + self.RightPreHand.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + self.RightPreHand.getAngle());
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	LeftPreLeg: {
+	this.LeftPreLeg = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 2;
+			this.length = self.partSize * 2;
 			this.angle = angle || this.angle;
-			this.x1 = People.Body.x2;
-			this.y1 = People.Body.y2;
+			this.x1 = self.Body.x2;
+			this.y1 = self.Body.y2;
 			this.x2 = this.x1 - getDeviationX(this.length, this.getAngle());
 			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
-			People.LeftLeg.calc();
+			self.LeftLeg.calc();
 			return this;
 		},
-		getAngle: function() { return this.angle + People.Body.angle; },
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		getAngle: function() { return this.angle + self.Body.angle; },
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	LeftLeg: {
+	this.LeftLeg = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 2;
+			this.length = self.partSize * 2;
 			this.angle = angle || this.angle;
-			this.x1 = People.LeftPreLeg.x2;
-			this.y1 = People.LeftPreLeg.y2;
-			this.x2 = this.x1 - getDeviationX(this.length, this.angle + People.LeftPreLeg.getAngle());
-			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.LeftPreLeg.getAngle());
+			this.x1 = self.LeftPreLeg.x2;
+			this.y1 = self.LeftPreLeg.y2;
+			this.x2 = this.x1 - getDeviationX(this.length, this.angle + self.LeftPreLeg.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + self.LeftPreLeg.getAngle());
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	RightPreLeg: {
+	this.RightPreLeg = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 2;
+			this.length = self.partSize * 2;
 			this.angle = angle || this.angle;
-			this.x1 = People.Body.x2;
-			this.y1 = People.Body.y2;
+			this.x1 = self.Body.x2;
+			this.y1 = self.Body.y2;
 			this.x2 = this.x1 + getDeviationX(this.length, this.getAngle());
 			this.y2 = this.y1 + getDeviationY(this.length, this.getAngle());
-			People.RightLeg.calc();
+			self.RightLeg.calc();
 			return this;
 		},
-		getAngle: function() { return this.angle - People.Body.angle; },
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		getAngle: function() { return this.angle - self.Body.angle; },
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
-	RightLeg: {
+	this.RightLeg = {
 		x1: 0, y1: 0, x2: 0, y2: 0, angle: 0, length: 0,
 		calc: function(angle) {
-			this.length = People.partSize * 2;
+			this.length = self.partSize * 2;
 			this.angle = angle || this.angle;
-			this.x1 = People.RightPreLeg.x2;
-			this.y1 = People.RightPreLeg.y2;
-			this.x2 = this.x1 - getDeviationX(this.length, this.angle + People.RightPreLeg.getAngle());
-			this.y2 = this.y1 + getDeviationY(this.length, this.angle + People.RightPreLeg.getAngle());
+			this.x1 = self.RightPreLeg.x2;
+			this.y1 = self.RightPreLeg.y2;
+			this.x2 = this.x1 - getDeviationX(this.length, this.angle + self.RightPreLeg.getAngle());
+			this.y2 = this.y1 + getDeviationY(this.length, this.angle + self.RightPreLeg.getAngle());
 			return this;
 		},
-		draw: function() { People.drawLine(this.x1, this.y1, this.x2, this.y2) },
-		moveTo: function(array, cycle) { People.moveTo(this, array, cycle); }
-	},
+		draw: function() { self.drawLine(this.x1, this.y1, this.x2, this.y2) },
+		moveTo: function(array, cycle) { self.moveTo(this, array, cycle); }
+	}
 
 
-	recalc: function() {
+	this.recalc = function() {
 		this.Body.calc();
 		this.LeftPreHand.calc();
 		this.RightPreHand.calc();
 		this.LeftPreLeg.calc();
 		this.RightPreLeg.calc();
-	},
-	resize: function() {
-		this.setPartSize();
-		this.setLineWidth();
-		this.Head.setPosition();
+	}
+	this.resize = function() {
+		Canvas.setSize();
+		self.setPartSize();
+		self.setLineWidth();
+		self.Head.setPosition();
 	},
 
 
-	drawLine: function (x1, y1, x2, y2)
+	this.drawLine = function (x1, y1, x2, y2)
 	{
 		C.moveTo(x1, y1);
 		C.lineTo(x2, y2);
 	},
-	draw: function() {
+	this.draw = function() {
+		C.clearRect(0, 0, Canvas.width, Canvas.height);
 		this.Head.draw();
 		C.beginPath();
 		this.Body.draw();
@@ -224,7 +232,7 @@ var People = {
 		C.closePath();
 		C.stroke();
 	},
-	moveTo: function(object, array, cycle) {
+	this.moveTo = function(object, array, cycle) {
 		if (!array.length) return false;
 		var arr = array.shift();
 		if (cycle) array.push(arr);
@@ -239,7 +247,7 @@ var People = {
 				if (needStep <= 0)
 				{
 					clearInterval(animation);
-					People.moveTo(object, array, cycle);
+					self.moveTo(object, array, cycle);
 				}
 			}, Canvas.frameTime);
 	}
