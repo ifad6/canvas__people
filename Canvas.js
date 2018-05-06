@@ -1,30 +1,31 @@
 function Canvas()
 {
 	var self = this;
+	var element;
 
 	this.create = function (containerID, id) {
 		var canvas = document.createElement('canvas');
-		var container = document.getElementById(containerID);
 		canvas.setAttribute('id', id);
+		var container = document.getElementById(containerID);
 		container.appendChild(canvas);
-		self.element = document.getElementById(id);
-		return this;
+		element = document.getElementById(id);
+		return self;
 	}
 	this.set = function (id) {
-		self.element = document.getElementById(id);
-		return this;
+		element = document.getElementById(id);
+		return self;
 	}
 	this.setSize = function (x, y) {
-		self.element.width = self.width = x || document.body.clientWidth;
-		self.element.height = self.height = y || document.body.clientHeight;
-		return this;
+		element.width = self.width = x || document.body.clientWidth;
+		element.height = self.height = y || document.body.clientHeight;
+		return self;
 	},
 	this.getContext = function () {
-		return self.element.getContext('2d');
+		return element.getContext('2d');
 	},
 	this.setFrameRate = function (rate) {
 		self.frameRate = rate;
-		self.frameTime = Math.round(1000 / this.frameRate);
-		return this;
+		self.frameTime = Math.round(1000 / self.frameRate);
+		return self;
 	}
 }
