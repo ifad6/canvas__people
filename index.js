@@ -7,8 +7,7 @@ window.addEventListener('resize', function() {
 	//Canvas.setSize();
 	player.resize();
 });
-var event = new Event('resize');
-window.dispatchEvent(event);
+window.dispatchEvent(new Event('resize'));
 
 
 setInterval(function(){
