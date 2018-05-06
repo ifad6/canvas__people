@@ -17,7 +17,7 @@ function People(id)
 {
 	var self = this;
 
-	this. id = id;
+	this.id = id;
 
 	var Canvas = new window.Canvas();
 	Canvas.create('body', id).setSize(500, 500).setFrameRate(30);
