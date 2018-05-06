@@ -5,19 +5,19 @@
 
 //var C = Canvas.getContext();
 
-var Player = new People('ifad6');
-Player.Head.setPosition(200, 100);
+var player = new People('ifad6');
+player.Head.setPosition(200, 100);
 
 //var Player2 = new People;
 //Player2.Head.setPosition(700, 100);
 
-/*window.addEventListener('resize', function() {
+window.addEventListener('resize', function() {
 	//Canvas.setSize();
-	Player.resize();
-	Player2.resize();
+	player.resize();
+	//Player2.resize();
 });
 var event = new Event('resize');
-window.dispatchEvent(event);*/
+window.dispatchEvent(event);
 
 
 //var Player = jQuery.extend(true, {}, People);
@@ -25,22 +25,22 @@ window.dispatchEvent(event);*/
 
 
 setInterval(function(){
-	Player.recalc();
-	Player.draw();
-	Player2.recalc();
-	Player2.draw();
+	player.recalc();
+	player.draw();
+	//Player2.recalc();
+	//Player2.draw();
 }, Canvas.frameTime);
 
 //People.Body.moveTo([ [-10, 0.5], [10, 0.5] ], true);
-Player.LeftPreHand.moveTo([ [90, 1.5], [0, 1.5] ], true);
-Player.LeftHand.moveTo([ [20, 0.5], [0, 0.5] ], true);
-Player.RightPreHand.moveTo([ [90, 1.5], [0, 1.5] ], true);
-Player.RightHand.moveTo([ [20, 0.5], [0, 0.5] ], true);
+player.LeftPreHand.moveTo([ [90, 1.5], [0, 1.5] ], true);
+player.LeftHand.moveTo([ [20, 0.5], [0, 0.5] ], true);
+player.RightPreHand.moveTo([ [90, 1.5], [0, 1.5] ], true);
+player.RightHand.moveTo([ [20, 0.5], [0, 0.5] ], true);
 
-Player.LeftPreLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
-Player.LeftLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
-Player.RightPreLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
-Player.RightLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
+player.LeftPreLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
+player.LeftLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
+player.RightPreLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
+player.RightLeg.moveTo([ [40, 1.5], [0, 1.5] ], true);
 
 //console.log(Player);
 
@@ -49,13 +49,13 @@ document.addEventListener('keydown', function(e) {
 
 	switch(e.keyCode)
 	{
-		case 37: People.LeftHand.angle += 3;
+		case 37: player.LeftHand.angle += 3;
 		break;
-		case 38: People.LeftLeg.angle += 3;
+		case 38: player.LeftLeg.angle += 3;
 		break;
-		case 39: People.RightHand.angle += 5;
+		case 39: player.RightHand.angle += 5;
 		break;
-		case 40: People.RightLeg.angle += 3;
+		case 40: player.RightLeg.angle += 3;
 		break;
 	}
 

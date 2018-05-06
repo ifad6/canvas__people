@@ -16,11 +16,13 @@ function getDeviationY(hypotenuseLength, angle)
 function People(id)
 {
 	var self = this;
+
+	this. id = id;
+
 	var Canvas = new window.Canvas();
-	Canvas.create('body', id).setSize(500, 500);
-	
-	Canvas.setFrameRate(30);
-	C = Canvas.getContext();
+	Canvas.create('body', id).setSize(500, 500).setFrameRate(30);
+
+	var C = Canvas.getContext();
 
 	this.partSize = 0;
 	this.setPartSize = function(size) {
@@ -40,6 +42,7 @@ function People(id)
 			this.x = x || this.x || Math.round(Canvas.width / 2);
 			this.y = y || this.y || Canvas.height - self.partSize * 10;
 			this.radius = radius || this.radius || self.partSize;
+			console.log('Head', this);
 			return this;
 		},
 		draw: function() {
@@ -196,14 +199,14 @@ function People(id)
 
 
 	this.recalc = function() {
-		this.Body.calc();
-		this.LeftPreHand.calc();
-		this.RightPreHand.calc();
-		this.LeftPreLeg.calc();
-		this.RightPreLeg.calc();
+		self.Body.calc();
+		self.LeftPreHand.calc();
+		self.RightPreHand.calc();
+		self.LeftPreLeg.calc();
+		self.RightPreLeg.calc();
 	}
 	this.resize = function() {
-		Canvas.setSize();
+		//Canvas.setSize();
 		self.setPartSize();
 		self.setLineWidth();
 		self.Head.setPosition();
@@ -217,18 +220,18 @@ function People(id)
 	},
 	this.draw = function() {
 		C.clearRect(0, 0, Canvas.width, Canvas.height);
-		this.Head.draw();
+		self.Head.draw();
 		C.beginPath();
-		this.Body.draw();
-		this.LeftPreHand.draw();
-		this.LeftHand.draw();
-		this.RightPreHand.draw();
-		this.RightHand.draw();
-		this.LeftPreLeg.draw();
-		this.LeftLeg.draw();
-		this.RightPreLeg.draw();
-		this.RightLeg.draw();
-		C.moveTo(this.Head.x, this.Head.y);
+		self.Body.draw();
+		self.LeftPreHand.draw();
+		self.LeftHand.draw();
+		self.RightPreHand.draw();
+		self.RightHand.draw();
+		self.LeftPreLeg.draw();
+		self.LeftLeg.draw();
+		self.RightPreLeg.draw();
+		self.RightLeg.draw();
+		C.moveTo(self.Head.x, self.Head.y);
 		C.closePath();
 		C.stroke();
 	},

@@ -15,8 +15,8 @@ function Canvas()
 		return this;
 	}
 	this.setSize = function (x, y) {
-		self.element.width = this.width = x || document.body.clientWidth;
-		self.element.height = this.height = y || document.body.clientHeight;
+		self.element.width = self.width = x || document.body.clientWidth;
+		self.element.height = self.height = y || document.body.clientHeight;
 		return this;
 	},
 	this.getContext = function () {
