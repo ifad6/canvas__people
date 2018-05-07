@@ -1,11 +1,11 @@
 
 var player = new People('ifad6');
-player.Head.setPosition(200, 100);
+player.setHeight(100).setPosition(50, 50);
 
 
 window.addEventListener('resize', function() {
 	//Canvas.setSize();
-	player.resize();
+	//player.resize();
 });
 window.dispatchEvent(new Event('resize'));
 

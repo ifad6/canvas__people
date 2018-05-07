@@ -20,6 +20,11 @@ function Canvas()
 		element.height = self.height = y || document.body.clientHeight;
 		return self;
 	},
+	this.setPosition = function(x, y) {
+		self.x = element.style.left = x + 'px';
+		self.y = element.style.top = y + 'px';
+		return self;
+	},
 	this.getContext = function () {
 		return element.getContext('2d');
 	},

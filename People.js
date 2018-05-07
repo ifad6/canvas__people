@@ -19,20 +19,37 @@ function People(id)
 
 	this.id = id;
 
+
 	var Canvas = new window.Canvas();
-	Canvas.create('body', id).setSize(500, 500).setFrameRate(30);
+	Canvas.create('body', id).setFrameRate(40);
 
 	var C = Canvas.getContext();
 
-	this.partSize = 0;
-	this.setPartSize = function(size) {
-		self.partSize = size || Math.round(Canvas.height / 12);
+
+	this.setHeight = function(height) {
+		self.height = height;
+		self.setPartSize().setLineWidth();
+		Canvas.setSize(height * 2, height * 2);
+		self.Head.setPosition();
+		console.log('Height:', height, 'partSize:', self.partSize, 'lineWidth:', self.lineWidth);
+		return self;
 	}
 
-	this.lineWidth = 0;
-	this.setLineWidth = function(width) {
-		C.lineWidth = self.lineWidth = width || Math.round(self.partSize / 3);
-		C.lineCap = 'round';
+	this.setPartSize = function(partSize) {
+		self.partSize = partSize || Math.floor(self.height / 9);
+		return self;
+	}
+
+	this.setLineWidth = function(lineWidth) {
+		self.lineWidth = lineWidth || Math.ceil(self.partSize / 3);
+		return self;
+	},
+
+	this.setPosition = function(x, y) {
+		self.x = x - Math.round(Canvas.width / 2);
+		self.y = y - Math.round(Canvas.height / 2);
+		Canvas.setPosition(self.x, self.y);
+		return self;
 	},
 
 
@@ -40,7 +57,7 @@ function People(id)
 		x: 0, y: 0, radius: 0,
 		setPosition: function(x, y, radius) {
 			this.x = x || this.x || Math.round(Canvas.width / 2);
-			this.y = y || this.y || Canvas.height - self.partSize * 10;
+			this.y = y || this.y || Math.round(Canvas.height / 2);
 			this.radius = radius || this.radius || self.partSize;
 			console.log('Head', this);
 			return this;
@@ -205,12 +222,6 @@ function People(id)
 		self.LeftPreLeg.calc();
 		self.RightPreLeg.calc();
 	}
-	this.resize = function() {
-		//Canvas.setSize();
-		self.setPartSize();
-		self.setLineWidth();
-		self.Head.setPosition();
-	},
 
 
 	this.drawLine = function (x1, y1, x2, y2)
@@ -220,6 +231,8 @@ function People(id)
 	},
 	this.draw = function() {
 		C.clearRect(0, 0, Canvas.width, Canvas.height);
+		C.lineWidth = self.lineWidth;
+		C.lineCap = 'round';
 		self.Head.draw();
 		C.beginPath();
 		self.Body.draw();
